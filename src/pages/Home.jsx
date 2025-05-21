@@ -12,16 +12,16 @@ const Home = () => {
       className="w-screen h-screen flex items-center justify-center bg-black"
       onClick={handlePlay}
     >
-      <video
+      {/* <video
         ref={videoRef}
-        src="/prank.mp4"
+        src="/public/prank.mp4"
         loop
         playsInline
         controls
         className="max-w-full max-h-full"
-      />
-      <p className="absolute bottom-4 text-white text-sm">
-        Click to play with sound
+      /> */}
+      <p className=" text-black text-sm">
+        There's nothing on this page go Back!!
       </p>
     </div>
   );
