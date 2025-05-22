@@ -3,20 +3,20 @@
   "version": "0.0.0",
   "private": true,
   "homepage": "https://AttaMishwani.github.io/practice-project",
-"scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "preview": "vite preview",
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist"
-}
-,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.7",
     "firebase": "^11.8.0",
     "flowbite": "^3.1.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
     "react-router-dom": "^7.6.0",
     "tailwindcss": "^4.1.7"
   },

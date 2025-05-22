@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../firebase/firebase"; // Adjust path as needed
+import { db } from "../firebase/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
@@ -10,12 +10,13 @@ const MoreInfo = () => {
     contactNumber: "",
     confirmEmail: "",
     confirmPassword: "",
-    location: null, // to store location { latitude, longitude }
+    location: null,
   });
 
+  const [locationError, setLocationError] = useState(false);
   const navigate = useNavigate();
-  useEffect(() => {
-    // Get user location when component mounts
+
+  const requestLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -26,17 +27,22 @@ const MoreInfo = () => {
               longitude: position.coords.longitude,
             },
           }));
+          setLocationError(false);
         },
         (error) => {
           console.error("Error getting location: ", error);
-          // Optionally set location to null or default
           setFormData((prev) => ({ ...prev, location: null }));
+          setLocationError(true);
         }
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
-      setFormData((prev) => ({ ...prev, location: null }));
+      setLocationError(true);
     }
+  };
+
+  useEffect(() => {
+    requestLocation();
   }, []);
 
   const handleChange = (e) => {
@@ -46,6 +52,12 @@ const MoreInfo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.location) {
+      alert("Location is required to continue. Please allow location access.");
+      requestLocation();
+      return;
+    }
 
     try {
       await addDoc(collection(db, "userDetails"), formData);
@@ -66,66 +78,102 @@ const MoreInfo = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md w-full max-w-md space-y-4"
-      >
-        <h2 className="text-2xl font-bold text-center">More Information</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-100 to-pink-100 px-4">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-8">
+        <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">
+          More Information
+        </h2>
 
-        <input
-          type="text"
-          name="fullName"
-          placeholder="Full Name"
-          value={formData.fullName}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-          required
-        />
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-          required
-        />
-        <input
-          type="text"
-          name="contactNumber"
-          placeholder="Contact Number"
-          value={formData.contactNumber}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-          required
-        />
-        <input
-          type="email"
-          name="confirmEmail"
-          placeholder="Confirm Email"
-          value={formData.confirmEmail}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-          required
-        />
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-          required
-        />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Full Name
+            </label>
+            <input
+              type="text"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+              placeholder="Enter your full name"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              required
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
-        >
-          Submit
-        </button>
-      </form>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Username
+            </label>
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="Choose a username"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Contact Number
+            </label>
+            <input
+              type="text"
+              name="contactNumber"
+              value={formData.contactNumber}
+              onChange={handleChange}
+              placeholder="Enter your phone number"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Confirm Email
+            </label>
+            <input
+              type="email"
+              name="confirmEmail"
+              value={formData.confirmEmail}
+              onChange={handleChange}
+              placeholder="Re-enter your email"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              placeholder="Re-enter your password"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              required
+            />
+          </div>
+
+          {locationError && (
+            <p className="text-sm text-red-600 bg-red-100 px-4 py-2 rounded-md text-center">
+              ⚠️ Location access is required. Please allow it to proceed.
+            </p>
+          )}
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white font-medium py-2 rounded-lg hover:bg-blue-700 transition duration-200"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
