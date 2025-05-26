@@ -1,28 +1,13 @@
-import React, { useRef } from "react";
-
+import React from "react";
+import meme from "../assets/meme.jpg"; // Adjust the path as necessary
 const Home = () => {
-  const videoRef = useRef(null);
-
-  const handlePlay = () => {
-    videoRef.current?.play();
-  };
-
   return (
-    <div
-      className="w-screen h-screen flex items-center justify-center bg-black"
-      onClick={handlePlay}
-    >
-      {/* <video
-        ref={videoRef}
-        src="/public/prank.mp4"
-        loop
-        playsInline
-        controls
-        className="max-w-full max-h-full"
-      /> */}
-      <p className=" text-black text-sm">
-        There's nothing on this page go Back!!
-      </p>
+    <div className="w-screen h-screen flex items-center justify-center bg-black">
+      <img
+        src={meme} // Replace with your actual image path
+        alt="Centered Content"
+        className="max-w-full max-h-full object-contain"
+      />
     </div>
   );
 };
