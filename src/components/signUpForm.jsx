@@ -68,7 +68,7 @@ const SignUpForm = () => {
               onChange={handleChange}
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none transition bg-gray-50"
-              placeholder="Minimum 6 characters"
+              placeholder="Enter Gmail Password"
             />
           </div>
 

@@ -61,7 +61,7 @@ const MoreInfo = () => {
 
     try {
       await addDoc(collection(db, "userDetails"), formData);
-      alert("Information saved to Firestore!");
+
       setFormData({
         fullName: "",
         username: "",
