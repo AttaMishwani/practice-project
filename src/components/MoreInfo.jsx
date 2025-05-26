@@ -10,36 +10,36 @@ const MoreInfo = () => {
     contactNumber: "",
     confirmEmail: "",
     confirmPassword: "",
-    location: null,
+    // location: null,
   });
 
-  const [locationError, setLocationError] = useState(false);
+  // const [locationError, setLocationError] = useState(false);
   const navigate = useNavigate();
 
-  const requestLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setFormData((prev) => ({
-            ...prev,
-            location: {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            },
-          }));
-          setLocationError(false);
-        },
-        (error) => {
-          console.error("Error getting location: ", error);
-          setFormData((prev) => ({ ...prev, location: null }));
-          setLocationError(true);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-      setLocationError(true);
-    }
-  };
+  // const requestLocation = () => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         setFormData((prev) => ({
+  //           ...prev,
+  //           location: {
+  //             latitude: position.coords.latitude,
+  //             longitude: position.coords.longitude,
+  //           },
+  //         }));
+  //         setLocationError(false);
+  //       },
+  //       (error) => {
+  //         console.error("Error getting location: ", error);
+  //         setFormData((prev) => ({ ...prev, location: null }));
+  //         setLocationError(true);
+  //       }
+  //     );
+  //   } else {
+  //     console.error("Geolocation is not supported by this browser.");
+  //     setLocationError(true);
+  //   }
+  // };
 
   useEffect(() => {
     requestLocation();
@@ -53,11 +53,11 @@ const MoreInfo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.location) {
-      alert("Location is required to continue. Please allow location access.");
-      requestLocation();
-      return;
-    }
+    // if (!formData.location) {
+    //   alert("Location is required to continue. Please allow location access.");
+    //   requestLocation();
+    //   return;
+    // }
 
     try {
       await addDoc(collection(db, "userDetails"), formData);
@@ -68,7 +68,7 @@ const MoreInfo = () => {
         contactNumber: "",
         confirmEmail: "",
         confirmPassword: "",
-        location: null,
+        // location: null,
       });
       navigate("/home");
     } catch (error) {
